@@ -72,7 +72,29 @@ namespace Budget.Pages
 
         protected async Task GridDeleteButtonClick(MouseEventArgs args, Budget.Models.Income income)
         {
-            // TODO: Delete income
+           var deleteStatus =  await DialogService.Confirm(message: "Are you sure you want to delete this record", title: "Delete Income");
+           if (deleteStatus == true)
+           {
+                try
+                {
+                     await IncomeService.DeleteIncome(income.Id);
+                    NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Success,
+                        Summary = $"{income.IncomeName} deleted successfully "
+                    });
+                    await grid0.Reload();
+                }
+                catch (Exception)
+                {
+
+                    NotificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Summary = $"There was an error deleting {income.IncomeName}"
+                    });
+                }
+           }
         }
 
         protected async System.Threading.Tasks.Task DataGrid0LoadData(Radzen.LoadDataArgs args)

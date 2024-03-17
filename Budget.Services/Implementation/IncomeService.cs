@@ -30,7 +30,7 @@ public class IncomeService : IIncomeService
 
     public async Task<Income?> GetIncomeById(Guid? id)
     {
-        if (id != null)
+        if (id == null)
         {
             return null;
         }
@@ -67,7 +67,7 @@ public class IncomeService : IIncomeService
         {
             return;
         }
-        var income = await GetIncomeById(id);
+        var income =  await GetIncomeById(id);
         if (income == null)
         {
             return;
