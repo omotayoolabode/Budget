@@ -8,4 +8,5 @@ public interface IIncomeService
     public Task<Income?> GetIncomeById(Guid? id);
     public Task<Income?> UpdateIncome(Income? income);
     public Task DeleteIncome(Guid? id);
+    Task AddIncome(Income income);
 }

@@ -76,4 +76,10 @@ public class IncomeService : IIncomeService
         await _dbContext.SaveChangesAsync();
         return;
     }
+
+    public async Task AddIncome(Income income)
+    {
+        _dbContext.Incomes.Add(income);
+        await _dbContext.SaveChangesAsync();
+    }
 }
