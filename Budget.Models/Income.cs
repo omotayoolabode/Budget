@@ -10,5 +10,7 @@ namespace Budget.Models
         public string IncomeName { get; set; }
         [Display(Name = "Income Description")]
         public string IncomeDescription { get; set; }
+        [Display(Name = "Income Date")]
+        public DateTime IncomeDate { get; set; }
     }
 }
