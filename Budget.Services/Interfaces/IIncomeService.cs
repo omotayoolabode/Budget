@@ -9,4 +9,5 @@ public interface IIncomeService
     public Task<Income?> UpdateIncome(Income? income);
     public Task DeleteIncome(Guid? id);
     Task AddIncome(Income income);
+    IEnumerable<Income> SearchIncomes(string search, IEnumerable<Income> incomes);
 }

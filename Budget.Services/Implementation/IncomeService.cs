@@ -82,4 +82,15 @@ public class IncomeService : IIncomeService
         _dbContext.Incomes.Add(income);
         await _dbContext.SaveChangesAsync();
     }
+
+    public IEnumerable<Income> SearchIncomes(string search, IEnumerable<Income> incomes)
+    {
+        var result = new List<Income>();
+        if (incomes == null || !incomes.Any())
+        {
+            return result;
+        }
+        result.AddRange(incomes.Where(income => income.IncomeName.ToLower().Contains(search.ToLower())));
+        return result;
+    }
 }

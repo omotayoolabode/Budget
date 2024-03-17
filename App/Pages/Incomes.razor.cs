@@ -47,10 +47,10 @@ namespace Budget.Pages
         protected async Task Search(ChangeEventArgs args)
         {
             search = $"{args.Value}";
-
+            //var searchedIncomes = IncomeService.SearchIncomes(search, incomes);
+            //incomes = searchedIncomes;
             await grid0.GoToPage(0);
-
-            // TODO: Populate incomes
+            await grid0.Reload();
         }
 
         protected async Task<IEnumerable<Income>> GetIncomes()
@@ -67,17 +67,17 @@ namespace Budget.Pages
 
         protected async Task EditRow(Budget.Models.Income args)
         {
-            await DialogService.OpenAsync<EditIncome>("Edit Income", new Dictionary<string, object> { {"Id", args.Id} });
+            await DialogService.OpenAsync<EditIncome>("Edit Income", new Dictionary<string, object> { { "Id", args.Id } });
         }
 
         protected async Task GridDeleteButtonClick(MouseEventArgs args, Budget.Models.Income income)
         {
-           var deleteStatus =  await DialogService.Confirm(message: "Are you sure you want to delete this record", title: "Delete Income");
-           if (deleteStatus == true)
-           {
+            var deleteStatus = await DialogService.Confirm(message: "Are you sure you want to delete this record", title: "Delete Income");
+            if (deleteStatus == true)
+            {
                 try
                 {
-                     await IncomeService.DeleteIncome(income.Id);
+                    await IncomeService.DeleteIncome(income.Id);
                     NotificationService.Notify(new NotificationMessage
                     {
                         Severity = NotificationSeverity.Success,
@@ -94,12 +94,19 @@ namespace Budget.Pages
                         Summary = $"There was an error deleting {income.IncomeName}"
                     });
                 }
-           }
+            }
         }
 
         protected async System.Threading.Tasks.Task DataGrid0LoadData(Radzen.LoadDataArgs args)
         {
-            incomes = await GetIncomes();
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                incomes = IncomeService.SearchIncomes(search, incomes);
+            }
+            else
+            {
+                incomes = await GetIncomes();
+            }
             return;
         }
     }
